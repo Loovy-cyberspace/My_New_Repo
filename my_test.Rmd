@@ -7,6 +7,8 @@ date: "2024-07-25"
 This is my new document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+final_update
 ```
 
 ## R Markdown
