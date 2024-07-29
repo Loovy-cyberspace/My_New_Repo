@@ -36,7 +36,7 @@ Data is from this paper: https://pubmed.ncbi.nlm.nih.gov/33096026/
 2. Identify one gene, one continuous covariate, and two categorical covariates in the provided dataset. Note: Gene expression data and metadata are in two separate files and will need to be linked.
 One gene:AIBG
 One continuous covariate:ferritin(ng/ml)
-Two categorical covariatesL sex, icu status
+Two categorical covariates： sex, icu status
 
 3. Generate the following three plots using ggplot2 for your covariates of choice:
 ```{r}
@@ -92,7 +92,20 @@ ggplot(data_combined, aes(x = ferritin.ng.ml., y = A1BG)) +
 ```
 
 o Boxplot of gene expression separated by both categorical covariates (5 pts)
+```{r}
+#Two categorical covariates：sex, icu status
+ggplot(data_combined, aes(x = sex, y = A1BG, fill = icu_status)) +
+  # Add boxplot
+  geom_boxplot()+
+  labs(title = "Boxplot of A1BG Gene Expression by Sex and ICU Status",
+       x = "Sex",
+       y = "A1BG Gene Expression",
+       fill = "ICU Status") +
+  theme_classic(base_family = 'Courier',base_size = 12)+
+  theme(legend.position = 'top')
 
+
+```
 
 4. Present your scatterplot in class. Be prepared to explain the gene and covariate you chose and comment on the distribution as if you were presenting your research findings. No slides are required, just bring your plot. In class, be prepared to provide constructive feedback for your classmates (5 pts)
 
