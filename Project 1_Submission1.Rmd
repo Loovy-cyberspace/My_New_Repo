@@ -1,42 +1,27 @@
 ---
 title: "Project 1_Submission1"
 author: "Luwei Zeng"
-output: pdf_document
 date: "2024-07-28"
+output:
+  pdf_document: 
+    latex_engine: xelatex
 ---
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
 Data is from this paper: https://pubmed.ncbi.nlm.nih.gov/33096026/
 
 1. Create a git repository for your project and push at least once prior to the first presentation with all the code you are presenting in class. See grading breakdown for final submission and bonus for details.
 
 2. Identify one gene, one continuous covariate, and two categorical covariates in the provided dataset. Note: Gene expression data and metadata are in two separate files and will need to be linked.
-One gene:AIBG
-One continuous covariate:ferritin(ng/ml)
-Two categorical covariates： sex, icu status
+
+One gene:AIBG;
+One continuous covariate:ferritin(ng/ml);
+Two categorical covariates:sex, icu status
+
+```{r}
+library("tidyverse")
+```
 
 3. Generate the following three plots using ggplot2 for your covariates of choice:
 ```{r}
@@ -53,55 +38,62 @@ A1BG_gene <- as.data.frame(t(A1BG_gene))
 
 #combine A1BG gene expression and metadata
 data_combined<-merge(A1BG_gene,metadata,by = "row.names")
-colnames(data_combined)[1] <- "ID"
-head(data_combined)
-
-
-```
-
-```{r}
-library("tidyverse")
+colnames(data_combined)[1] <- "ID" #set the 1st column name as "ID"
+#head(data_combined)
 ```
 
 o Histogram for gene expression (5 pts)
 ```{r}
+#One gene:AIBG
+#Define the overall plot with 'data_combined' as the data source and map 'A1BG' to the x-axis
 ggplot(data_combined,aes(x = A1BG)) +
+  #Add histogram data with specific bin width, fill color, and border color
   geom_histogram(binwidth=0.1,fill="darkgreen",color="grey50")+
+  #Change labels for the title, x-axis, and y-axis
   labs(title="Histogram of A1BG Gene Expression",
      x="A1BG Gene Expression",
      y="Frequency")+
-  theme_classic(base_family = 'Courier',base_size = 12)
-
-#range(data_combined$A1BG)
+  # Define the theme as classic with 'Courier' font and base font size of 10
+  theme_classic(base_family = 'Courier',base_size = 10)
 ```
 
 o Scatterplot for gene expression and continuous covariate (5 pts)
 ```{r}
 #One continuous covariate:ferritin(ng/ml)
 
+#Ensure the column 'ferritin.ng.ml.' is of numeric type
 data_combined$ferritin.ng.ml. <- as.numeric(data_combined$ferritin.ng.ml.)
 
+#Define the overall plot with 'data_combined' as the data source and map 'ferritin.ng.ml.' to the x-axis and 'A1BG' to the y-axis
 ggplot(data_combined, aes(x = ferritin.ng.ml., y = A1BG)) +
+  #Add points to the plot, setting the color of the points to dark green
   geom_point(color="darkgreen") +
+  #Change labels for the title, x-axis, and y-axis
   labs(title="Scatterplot of A1BG Gene Expression vs Ferritin(ng/ml)",
        x = "Ferritin (ng/ml)",
        y = "A1BG Gene Expression") +
+  #Define the scale for the x-axis, setting limits from 0 to 6000 and breaks at intervals of 500
   scale_x_continuous(limits = c(0, 6000), breaks = seq(0, 6000, by = 500)) +
-  theme_classic(base_family = 'Courier',base_size = 12)
+  # Define the theme as classic with 'Courier' font and base font size of 10
+  theme_classic(base_family = 'Courier',base_size = 10)
 
 ```
 
 o Boxplot of gene expression separated by both categorical covariates (5 pts)
 ```{r}
 #Two categorical covariates：sex, icu status
+#Define the overall plot with 'data_combined' as the data source and map 'sex' to the x-axis, 'A1BG' to the y-axis, and 'icu_status' to the fill color.
 ggplot(data_combined, aes(x = sex, y = A1BG, fill = icu_status)) +
   # Add boxplot
   geom_boxplot()+
+  #Change labels for the title, x-axis, y-axis, and fill legend
   labs(title = "Boxplot of A1BG Gene Expression by Sex and ICU Status",
        x = "Sex",
        y = "A1BG Gene Expression",
        fill = "ICU Status") +
-  theme_classic(base_family = 'Courier',base_size = 12)+
+  #Define the theme as classic with 'Courier' font and base font size of 10
+  theme_classic(base_family = 'Courier',base_size = 10)+
+  # Customize the theme to position the legend at the top of the plot
   theme(legend.position = 'top')
 
 
